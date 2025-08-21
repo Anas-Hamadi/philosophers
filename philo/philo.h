@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:17 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/19 15:09:19 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 	int				simulation_end;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
+	pthread_t		monitor_thread;
 	t_philosopher	*philosophers;
 	t_fork			*forks;
 }	t_data;
@@ -67,14 +68,14 @@ void	cleanup_data(t_data *data);
 
 void	*philosopher_routine(void *arg);
 int		start_simulation(t_data *data);
-void	monitor_philosophers(t_data *data);
+void	*monitor_philosophers(void *arg);
 
 void	philo_eat(t_philosopher *philo);
 void	philo_sleep(t_philosopher *philo);
 void	philo_think(t_philosopher *philo);
 
 long	get_time(void);
-void	precise_usleep(long microseconds);
+void	precise_usleep(long microseconds, t_data *data);
 void	print_status(t_philosopher *philo, char *status);
 int		is_simulation_end(t_data *data);
 int		ft_atoi(const char *str);

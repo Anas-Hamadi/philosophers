@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:09 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 01:21:43 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 15:20:58 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	init_philosophers(t_data *data)
 	{
 		data->philosophers[i].id = i + 1;
 		data->philosophers[i].eat_count = 0;
-		data->philosophers[i].last_meal_time = get_time(); // shouldn't last meal in init be 0 or something? 
+		data->philosophers[i].last_meal_time = get_time();
 		data->philosophers[i].data = data;
 		i++;
 	}

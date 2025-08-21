@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:25 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/20 21:37:41 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 15:46:11 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	*philosopher_routine(void *arg)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)arg;
-	if (philo->id % 2 == 0)
-		precise_usleep(15000);
+	// if (philo->id % 2 == 0)
+	// 	precise_usleep(15000);
 	while (!is_simulation_end(philo->data))
 	{
 		philo_eat(philo);
@@ -49,9 +49,13 @@ static int	is_philosopher_dead(t_philosopher *philo)
 {
 	long	current_time;
 	long	time_since_last_meal;
+	long	last_meal;
 
 	current_time = get_time();
-	time_since_last_meal = current_time - philo->last_meal_time;
+	pthread_mutex_lock(&philo->data->death_mutex);
+	last_meal = philo->last_meal_time;
+	pthread_mutex_unlock(&philo->data->death_mutex);
+	time_since_last_meal = current_time - last_meal;
 	return (time_since_last_meal > philo->data->time_to_die);
 }
 
@@ -64,13 +68,17 @@ static int	is_philosopher_dead(t_philosopher *philo)
 static int	all_philosophers_satisfied(t_data *data)
 {
 	int	i;
+	int	count;
 
 	if (data->must_eat_count == -1)
 		return (0);
 	i = 0;
 	while (i < data->philo_count)
 	{
-		if (data->philosophers[i].eat_count < data->must_eat_count)
+		pthread_mutex_lock(&data->death_mutex);
+		count = data->philosophers[i].eat_count;
+		pthread_mutex_unlock(&data->death_mutex);
+		if (count < data->must_eat_count)
 			return (0);
 		i++;
 	}
@@ -78,15 +86,17 @@ static int	all_philosophers_satisfied(t_data *data)
 }
 
 /*
-** Main monitoring function that runs in the main thread
-** Args: data structure
-** Why: Continuously monitors for death or satisfaction conditions
+** Main monitoring function that runs in its own thread
+** Args: void pointer to data structure
+** Why: Continuously monitors for death or satisfaction conditions in parallel
 ** How: Check each philosopher in sequence, detect death/satisfaction
 */
-void	monitor_philosophers(t_data *data)
+void	*monitor_philosophers(void *arg)
 {
-	int	i;
+	t_data	*data;
+	int		i;
 
+	data = (t_data *)arg;
 	while (1)
 	{
 		i = 0;
@@ -94,11 +104,11 @@ void	monitor_philosophers(t_data *data)
 		{
 			if (is_philosopher_dead(&data->philosophers[i]))
 			{
+				print_status(&data->philosophers[i], "died");
 				pthread_mutex_lock(&data->death_mutex);
 				data->simulation_end = 1;
 				pthread_mutex_unlock(&data->death_mutex);
-				print_status(&data->philosophers[i], "died");
-				return ;
+				return (NULL);
 			}
 			i++;
 		}
@@ -107,7 +117,7 @@ void	monitor_philosophers(t_data *data)
 			pthread_mutex_lock(&data->death_mutex);
 			data->simulation_end = 1;
 			pthread_mutex_unlock(&data->death_mutex);
-			return ;
+			return (NULL);
 		}
 		usleep(1000);
 	}
@@ -118,7 +128,7 @@ void	monitor_philosophers(t_data *data)
 ** Args: data structure
 ** Returns: SUCCESS or ERROR
 ** Why: Main simulation controller
-** How: Create all philosopher threads, then monitor from main thread
+** How: Create all philosopher threads and monitor thread, then join all
 */
 int	start_simulation(t_data *data)
 {
@@ -132,7 +142,10 @@ int	start_simulation(t_data *data)
 			return (ERROR);
 		i++;
 	}
-	monitor_philosophers(data);
+	if (pthread_create(&data->monitor_thread, NULL,
+			monitor_philosophers, data) != 0)
+		return (ERROR);
+	pthread_join(data->monitor_thread, NULL);
 	i = 0;
 	while (i < data->philo_count)
 	{

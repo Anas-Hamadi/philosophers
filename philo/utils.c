@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:30 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/19 15:09:31 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ long	get_time(void)
 
 /*
 ** Custom precise sleep function using busy waiting with small delays
-** Args: microseconds to sleep
+** Args: microseconds to sleep, data structure for simulation end check
 ** Why: usleep() is inaccurate due to CPU scheduling - this is more precise
 ** How: Check time repeatedly with tiny usleep calls to avoid busy-waiting
 */
-void	precise_usleep(long microseconds)
+void	precise_usleep(long microseconds, t_data *data)
 {
 	long	start_time;
 	long	current_time;
@@ -60,6 +60,8 @@ void	precise_usleep(long microseconds)
 	start_time = get_time() * 1000;
 	while (1)
 	{
+		if (is_simulation_end(data))
+			return ;
 		current_time = get_time() * 1000;
 		elapsed = current_time - start_time;
 		if (elapsed >= microseconds)

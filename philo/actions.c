@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:21 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 01:16:01 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ void	philo_eat(t_philosopher *philo)
 	if (take_forks(philo) == ERROR)
 		return ;
 	print_status(philo, "is eating");
+	pthread_mutex_lock(&philo->data->death_mutex);
 	philo->last_meal_time = get_time();
 	philo->eat_count++;
-	precise_usleep(philo->data->time_to_eat * 1000);
+	pthread_mutex_unlock(&philo->data->death_mutex);
+	precise_usleep(philo->data->time_to_eat * 1000, philo->data);
 	release_forks(philo);
 }
 
@@ -82,7 +84,7 @@ void	philo_eat(t_philosopher *philo)
 void	philo_sleep(t_philosopher *philo)
 {
 	print_status(philo, "is sleeping");
-	precise_usleep(philo->data->time_to_sleep * 1000);
+	precise_usleep(philo->data->time_to_sleep * 1000, philo->data);
 }
 
 /*
@@ -102,6 +104,6 @@ void	philo_think(t_philosopher *philo)
 		think_time = (philo->data->time_to_eat * 2) 
 			- philo->data->time_to_sleep;
 		if (think_time > 0)
-			precise_usleep(think_time * 1000);
+			precise_usleep(think_time * 1000, philo->data);
 	}
 }
