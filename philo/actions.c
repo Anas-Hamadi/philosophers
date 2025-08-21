@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:21 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 18:27:29 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ static int	take_forks(t_philosopher *philo)
 		return (ERROR);
 	}
 	print_status(philo, "has taken a fork");
-	if (philo->data->philo_count == 1)
-	{
-		pthread_mutex_unlock(&philo->left_fork->mutex);
-		// maybe here set end_simulation to 1
-		return (ERROR);
-	}
 	pthread_mutex_lock(&philo->right_fork->mutex);
 	if (is_simulation_end(philo->data))
 	{

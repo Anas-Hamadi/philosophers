@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:30 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 18:27:29 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ void	precise_usleep(long microseconds, t_data *data)
 	long	elapsed;
 
 	start_time = get_time() * 1000;
+	if (NULL == data)
+	{
+		usleep(microseconds);
+		return ;
+	}
 	while (1)
 	{
 		if (is_simulation_end(data))

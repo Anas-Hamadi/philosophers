@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:25 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 15:46:11 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 18:27:29 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,15 @@ void	*philosopher_routine(void *arg)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)arg;
-	// if (philo->id % 2 == 0)
-	// 	precise_usleep(15000);
+	if (philo->data->philo_count == 1)
+	{
+		print_status(philo, "has taken a fork");
+		while (!is_simulation_end(philo->data))
+			precise_usleep(1000, philo->data);
+		return (NULL);
+	}
+	if (philo->id % 2 == 0)
+		precise_usleep(15000, philo->data);
 	while (!is_simulation_end(philo->data))
 	{
 		philo_eat(philo);
@@ -135,6 +142,13 @@ int	start_simulation(t_data *data)
 	int	i;
 
 	i = 0;
+	// if (1 == data->philo_count)
+	// {
+	// 	print_status(&data->philosophers[0], "has taken a fork");
+	// 	precise_usleep(data->time_to_die, NULL);
+	// 	print_status(&data->philosophers[0], "died");
+	// 	return (SUCCESS);
+	// }
 	while (i < data->philo_count)
 	{
 		if (pthread_create(&data->philosophers[i].thread, NULL,
