@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:25 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 18:27:29 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/21 21:38:07 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	*philosopher_routine(void *arg)
 			precise_usleep(1000, philo->data);
 		return (NULL);
 	}
-	if (philo->id % 2 == 0)
-		precise_usleep(15000, philo->data);
+	// if (philo->id % 2 == 0)
+	// 	precise_usleep(1500, philo->data);
 	while (!is_simulation_end(philo->data))
 	{
 		philo_eat(philo);
@@ -64,6 +64,20 @@ static int	is_philosopher_dead(t_philosopher *philo)
 	pthread_mutex_unlock(&philo->data->death_mutex);
 	time_since_last_meal = current_time - last_meal;
 	return (time_since_last_meal > philo->data->time_to_die);
+	// // Debug output for death detection
+	// if (time_since_last_meal > (philo->data->time_to_die * 0.8))
+	// {
+	// 	printf("⚠️  DEBUG: Philo %d is close to death! Time since last meal: %ld ms (limit: %ld ms)\n", 
+	// 		philo->id, time_since_last_meal, philo->data->time_to_die);
+	// }
+	
+	// if (time_since_last_meal > philo->data->time_to_die)
+	// {
+	// 	printf("💀 DEBUG: Philo %d DIED! Last meal: %ld ms, Current: %ld ms, Starved for: %ld ms\n", 
+	// 		philo->id, last_meal, current_time, time_since_last_meal);
+	// 	return (1);
+	// }
+	// return (0);
 }
 
 /*
@@ -141,6 +155,10 @@ int	start_simulation(t_data *data)
 {
 	int	i;
 
+	// printf("🚀 SIMULATION START: %ld ms (absolute time)\n", data->start_time);
+	// printf("📊 CONFIG: %d philosophers, die=%ldms, eat=%ldms, sleep=%ldms\n", 
+	// 	data->philo_count, data->time_to_die, data->time_to_eat, data->time_to_sleep);
+	// printf("----------------------------------------\n");
 	i = 0;
 	// if (1 == data->philo_count)
 	// {
