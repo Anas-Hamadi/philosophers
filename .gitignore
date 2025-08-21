@@ -1,5 +1,5 @@
 # Ignore compiled binary
-minishell
+philo
 a.out
 
 # Ignore object files and directories
