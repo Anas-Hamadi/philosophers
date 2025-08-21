@@ -1,0 +1,25 @@
+# Ignore compiled binary
+minishell
+a.out
+
+# Ignore object files and directories
+*.o
+obj/
+
+# Ignore libft compiled files
+libft.a
+libft/libft.a
+libft/obj/
+
+# Ignore editor/OS files
+.vscode/
+*.swp
+.DS_Store
+*.pdf
+notes
+*.md
+*.log
+*.sh
+
+# Misc
+minishell_tester
