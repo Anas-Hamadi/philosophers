@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:17 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 17:09:22 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,7 @@ void	precise_usleep(long microseconds, t_data *data);
 void	print_status(t_philosopher *philo, char *status);
 int		is_simulation_end(t_data *data);
 int		ft_atoi(const char *str);
+int		is_philosopher_dead(t_philosopher *philo);
+int		all_philosophers_satisfied(t_data *data);
 
 #endif

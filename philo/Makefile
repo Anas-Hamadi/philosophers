@@ -11,7 +11,8 @@ SOURCES = main.c \
 		  init.c \
 		  routine.c \
 		  actions.c \
-		  utils.c
+		  utils.c \
+		  monitor.c
 
 OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 

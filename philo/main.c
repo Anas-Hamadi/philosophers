@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:33 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 17:26:08 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,20 @@ static int	validate_and_convert(char *str)
 	return (result);
 }
 
-int	parse_args(int argc, char **argv, t_data *data)
+static int	parse_validation(int argc, char **argv, t_data *data)
 {
-	if (argc < 5 || argc > 6)
-	{
-		printf("Usage: %s number_of_philosophers time_to_die ", argv[0]);
-		printf("time_to_eat time_to_sleep ");
-		printf("[number_of_times_each_philosopher_must_eat]\n");
-		return (ERROR);
-	}
-	data->philo_count = validate_and_convert(argv[1]);
-	data->time_to_die = validate_and_convert(argv[2]);
-	data->time_to_eat = validate_and_convert(argv[3]);
-	data->time_to_sleep = validate_and_convert(argv[4]);
 	if (data->philo_count == -1 || data->time_to_die == -1
 		|| data->time_to_eat == -1 || data->time_to_sleep == -1)
 		return (ERROR);
+	if (data->philo_count > 200)
+	{
+		printf("Error: Maximum 200 philosophers allowed\n");
+		return (ERROR);
+	}
 	if (argc == 6)
 	{
+		if (!argv[5])
+			return (ERROR);
 		data->must_eat_count = validate_and_convert(argv[5]);
 		if (data->must_eat_count == -1)
 			return (ERROR);
@@ -62,6 +58,26 @@ int	parse_args(int argc, char **argv, t_data *data)
 	else
 		data->must_eat_count = -1;
 	return (SUCCESS);
+}
+
+int	parse_args(int argc, char **argv, t_data *data)
+{
+	if (!argv)
+		return (ERROR);
+	if (argc < 5 || argc > 6)
+	{
+		printf("Usage: %s number_of_philosophers time_to_die ", argv[0]);
+		printf("time_to_eat time_to_sleep ");
+		printf("[number_of_times_each_philosopher_must_eat]\n");
+		return (ERROR);
+	}
+	if (!argv[1] || !argv[2] || !argv[3] || !argv[4])
+		return (ERROR);
+	data->philo_count = validate_and_convert(argv[1]);
+	data->time_to_die = validate_and_convert(argv[2]);
+	data->time_to_eat = validate_and_convert(argv[3]);
+	data->time_to_sleep = validate_and_convert(argv[4]);
+	return (parse_validation(argc, argv, data));
 }
 
 int	main(int argc, char **argv)

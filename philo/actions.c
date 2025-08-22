@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:21 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 21:39:52 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,12 @@ static void	release_forks(t_philosopher *philo)
 */
 void	philo_eat(t_philosopher *philo)
 {
-	// long	eat_start_time;
-	// long	eat_end_time;
-	// long	time_since_start;
-
 	if (take_forks(philo) == ERROR)
 		return ;
-	
-	// eat_start_time = get_time();
-	// time_since_start = eat_start_time - philo->data->start_time;
-	// printf("🍝 DEBUG: Philo %d STARTS eating at %ld ms (sim+%ld ms)\n", 
-	// 	philo->id, eat_start_time, time_since_start);
-	
 	print_status(philo, "is eating");
-	
-	// eat_end_time = get_time();
-	// time_since_start = eat_end_time - philo->data->start_time;
-	// printf("✅ DEBUG: Philo %d FINISHES eating at %ld ms (sim+%ld ms, duration=%ld ms)\n", 
-	// 	philo->id, eat_end_time, time_since_start, eat_end_time - eat_start_time);
-	
 	pthread_mutex_lock(&philo->data->death_mutex);
 	philo->last_meal_time = get_time();
 	philo->eat_count++;
-	// printf("📈 DEBUG: Philo %d meal count: %d, last_meal_time updated to %ld ms\n", 
-	// 	philo->id, philo->eat_count, philo->last_meal_time);
 	pthread_mutex_unlock(&philo->data->death_mutex);
 	precise_usleep(philo->data->time_to_eat * 1000, philo->data);
 	release_forks(philo);
@@ -113,7 +95,7 @@ void	philo_think(t_philosopher *philo)
 	print_status(philo, "is thinking");
 	if (philo->data->philo_count % 2 == 1)
 	{
-		think_time = (philo->data->time_to_eat * 2) 
+		think_time = (philo->data->time_to_eat * 2)
 			- philo->data->time_to_sleep;
 		if (think_time > 0)
 			precise_usleep(think_time * 1000, philo->data);

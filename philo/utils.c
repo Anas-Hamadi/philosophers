@@ -6,7 +6,7 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:30 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/21 18:27:29 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:41:29 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@
 */
 int	ft_atoi(const char *str)
 {
-	int	result;
-	int	i;
+	long	result;
+	int		i;
 
 	result = 0;
 	i = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i] - '0');
+		if (result > 2147483647)
+			return (-1);
 		i++;
 	}
-	return (result);
+	return ((int)result);
 }
 
 /*
