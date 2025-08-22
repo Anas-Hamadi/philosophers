@@ -1,7 +1,6 @@
 # Ignore compiled binary
-philo
 a.out
-
+philo/philo
 # Ignore object files and directories
 *.o
 obj/

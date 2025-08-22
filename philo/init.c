@@ -6,18 +6,12 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:09 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:00:41 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-** Initializes fork structures with mutexes
-** Args: data structure containing fork array
-** Returns: SUCCESS or ERROR
-** Why: Each fork needs a mutex to prevent race conditions
-*/
 int	init_forks(t_data *data)
 {
 	int	i;
@@ -38,13 +32,6 @@ int	init_forks(t_data *data)
 	return (SUCCESS);
 }
 
-/*
-** Assigns fork pointers to philosophers using odd/even strategy
-** Args: data structure
-** Why: Prevents deadlock and ensures fairness
-** How: Even philosophers pick left first, odd pick right first
-** This breaks the circular wait condition that causes deadlock
-*/
 static void	assign_forks(t_data *data)
 {
 	int	i;
@@ -90,12 +77,6 @@ int	init_philosophers(t_data *data)
 	return (SUCCESS);
 }
 
-/*
-** Initializes all data structures and mutexes
-** Args: data structure
-** Returns: SUCCESS or ERROR
-** Why: Must initialize everything before starting threads
-*/
 int	init_data(t_data *data)
 {
 	data->start_time = get_time();
@@ -110,12 +91,6 @@ int	init_data(t_data *data)
 		return (ERROR);
 	return (SUCCESS);
 }
-
-/*
-** Cleans up all allocated memory and destroys mutexes
-** Args: data structure
-** Why: Prevent memory leaks and properly destroy mutexes
-*/
 void	cleanup_data(t_data *data)
 {
 	int	i;

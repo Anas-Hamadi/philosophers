@@ -6,19 +6,12 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:25 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:02:46 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-** Main philosopher thread routine
-** Args: void pointer to philosopher structure
-** Returns: NULL
-** Why: Each philosopher runs this as their main thread function
-** How: Continuous cycle of eating, sleeping, thinking until simulation ends
-*/
 void	*philosopher_routine(void *arg)
 {
 	t_philosopher	*philo;
@@ -47,12 +40,6 @@ void	*philosopher_routine(void *arg)
 	return (NULL);
 }
 
-/*
-** Main monitoring function that runs in its own thread
-** Args: void pointer to data structure
-** Why: Continuously monitors for death or satisfaction conditions in parallel
-** How: Check each philosopher in sequence, detect death/satisfaction
-*/
 static int	check_death_and_satisfaction(t_data *data)
 {
 	int	i;
@@ -93,13 +80,6 @@ void	*monitor_philosophers(void *arg)
 	}
 }
 
-/*
-** Starts the simulation by creating threads and monitoring
-** Args: data structure
-** Returns: SUCCESS or ERROR
-** Why: Main simulation controller
-** How: Create all philosopher threads and monitor thread, then join all
-*/
 int	start_simulation(t_data *data)
 {
 	int	i;

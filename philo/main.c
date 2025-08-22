@@ -6,17 +6,12 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:08:33 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/22 14:42:46 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:01:01 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-** Validates that a string contains only digits and converts to positive int
-** Returns: converted number if valid, -1 if invalid
-** Why: Need to ensure all arguments are positive integers
-*/
 static int	validate_and_convert(char *str)
 {
 	int	i;

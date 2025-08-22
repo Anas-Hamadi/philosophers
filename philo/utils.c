@@ -6,17 +6,12 @@
 /*   By: ahamadi <ahamadi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 15:09:30 by ahamadi           #+#    #+#             */
-/*   Updated: 2025/08/22 14:41:29 by ahamadi          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:03:09 by ahamadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-** Custom atoi implementation following 42 norm
-** Returns: converted integer
-** Why: Need string to int conversion for argument parsing
-*/
 int	ft_atoi(const char *str)
 {
 	long	result;
@@ -34,11 +29,6 @@ int	ft_atoi(const char *str)
 	return ((int)result);
 }
 
-/*
-** Gets current time in milliseconds since epoch
-** Returns: time in milliseconds
-** Why: Need precise timing for death detection and status messages
-*/
 long	get_time(void)
 {
 	struct timeval	tv;
@@ -47,12 +37,6 @@ long	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-/*
-** Custom precise sleep function using busy waiting with small delays
-** Args: microseconds to sleep, data structure for simulation end check
-** Why: usleep() is inaccurate due to CPU scheduling - this is more precise
-** How: Check time repeatedly with tiny usleep calls to avoid busy-waiting
-*/
 void	precise_usleep(long microseconds, t_data *data)
 {
 	long	start_time;
@@ -77,12 +61,6 @@ void	precise_usleep(long microseconds, t_data *data)
 	}
 }
 
-/*
-** Thread-safe status printing with timestamp
-** Args: philosopher pointer, status string
-** Why: All status messages must be synchronized and timestamped
-** How: Use print_mutex to prevent message overlap
-*/
 void	print_status(t_philosopher *philo, char *status)
 {
 	long	timestamp;
@@ -96,11 +74,6 @@ void	print_status(t_philosopher *philo, char *status)
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
-/*
-** Checks if simulation should end (thread-safe)
-** Returns: 1 if simulation ended, 0 otherwise
-** Why: Multiple threads need to check simulation state safely
-*/
 int	is_simulation_end(t_data *data)
 {
 	int	result;
